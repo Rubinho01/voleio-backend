@@ -36,7 +36,7 @@ Desenvolver uma api rest e uma interface web capaz de gerenciar aluguéis, quadr
 
 - RF01 – O sistema deve permitir cadastro de quadras.
 - RF02 – O sistema deve permitir cadastro de usuários.
-- RF03 – O sistema deve registrar Aluguéis de quadras.
+- RF03 – O sistema deve registrar reservas de quadras.
 - RF04 – O sistema deve autenticar usuários em roles.
 - RF05 – O sistema deve permitir cancelamento de aluguéis.
 - RF06 – O sistema deve conter um dashboard para funcinários.
