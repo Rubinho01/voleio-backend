@@ -10,7 +10,7 @@
           
 </p>
 
-## 👥 Desenvolvedores
+## Desenvolvedores
 
 - Rubem Gustavo Krüger (Rubinho01)
 - Thomas Pruner (ThomasPruner)
@@ -19,20 +19,20 @@
 
 ## 1. Domínio do Problema
 
-### 📌 Contexto
+### Contexto
 
 O sistema tem como objetivo automatizar o processo de aluguel e reserva de quadras esportivas.  
 Ele será utilizado por alunos, praticantes e instituições esportivas para Agendar aulas ou alugar quadras.
 
 ---
 
-### 🎯 Objetivo Geral
+### Objetivo Geral
 
 Desenvolver uma api rest e uma interface web capaz de gerenciar aluguéis, quadras, clientes e funcionários.
 
 ---
 
-### ✅ Requisitos Funcionais (RF)
+### Requisitos Funcionais
 
 - RF01 – O sistema deve permitir cadastro de quadras.
 - RF02 – O sistema deve permitir cadastro de usuários.
@@ -41,11 +41,12 @@ Desenvolver uma api rest e uma interface web capaz de gerenciar aluguéis, quadr
 - RF05 – O sistema deve permitir cancelamento de aluguéis.
 - RF06 – O sistema deve conter um dashboard para funcinários.
 - RF07 – O sistema deve conter contatos da instituição de esportes.
+- RF08 - O sistema deve enviar e-mails para o Administrador informando reservas.
 
 
 ---
 
-### ⚙️ Requisitos Não Funcionais (RNF)
+### Requisitos Não Funcionais
 
 - RNF01 – O sistema deve utilizar arquitetura REST.
 - RNF02 – O sistema deve utilizar banco de dados relacional.
@@ -58,13 +59,13 @@ Desenvolver uma api rest e uma interface web capaz de gerenciar aluguéis, quadr
 
 ## 2. Tecnologias Utilizadas e Justificativas
 
-### ☕ Java
+### Java
 
 Escolhido por ser uma linguagem amplamente utilizada no mercado e possuir forte suporte para aplicações robustas.
 
 ---
 
-### 🌱 Spring Boot
+### Spring Boot
 
 Framework escolhido para:
 - Facilidade na criação de APIs REST
@@ -73,7 +74,7 @@ Framework escolhido para:
 
 ---
 
-### ⚛️ React
+### React
 
 Framework escolhido para:
 - Facilidade na criação de componentes front-end
@@ -82,7 +83,7 @@ Framework escolhido para:
 ---
 
 
-### 🐘 PostgreSQL
+### PostgreSQL
 
 Banco de dados relacional escolhido por:
 - Confiabilidade
@@ -92,7 +93,7 @@ Banco de dados relacional escolhido por:
 
 ---
 
-### 🔧 Outras Tecnologias
+### Outras Tecnologias
 
 - Maven – Gerenciamento de dependências
 - Docker – Containerização da aplicação
@@ -102,18 +103,11 @@ Banco de dados relacional escolhido por:
 
 ## 3. Organização das Tarefas
 
-### 👥 Desenvolvedores
 
-- Rubem Gustavo (Rubinho01)
-- Thomas Pruner (ThomasPrunes)
-
----
-
-
-### 🛠️ Organização das Atividades
+### Organização das Atividades
 
 As tarefas foram organizadas utilizando:
-- GitHub Projects
+- Trello para Kanban
 - Commits organizados por funcionalidade
 - Branches separadas para cada feature
 
@@ -124,7 +118,7 @@ Exemplo de organização de branches:
 
 ---
 
-### 🔄 Estratégia de Integração
+### Estratégia de Integração
 
 - Cada funcionalidade será desenvolvida em uma branch separada.
 - Após validação, será realizado merge na branch principal.
