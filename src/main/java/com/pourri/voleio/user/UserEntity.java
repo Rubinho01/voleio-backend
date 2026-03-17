@@ -2,10 +2,10 @@ package com.pourri.voleio.user;
 
 
 import com.pourri.voleio.rental.RentalEntity;
+import com.pourri.voleio.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "users",uniqueConstraints ={@UniqueConstraint(columnNames = {"cpf", "phone"})} )
 @Getter
 @Setter
+@AllArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,11 @@ public class UserEntity {
     private String cpf;
     private String password;
     private String phone;
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name="users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id"))
+    private List<Role> roles;
     private Date createdAt;
     private Date updatedAt;
     @OneToMany(mappedBy = "user")
@@ -33,16 +38,6 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String email, String username, String cpf, String password, Date createdAt, String role, String phone, Date updatedAt, List<RentalEntity> rentals) {
-        this.email = email;
-        this.username = username;
-        this.cpf = cpf;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.role = role;
-        this.phone = phone;
-        this.updatedAt = updatedAt;
-        this.rentals = rentals;
-    }
+
 }
 
