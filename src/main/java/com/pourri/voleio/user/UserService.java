@@ -3,12 +3,20 @@ package com.pourri.voleio.user;
 
 import com.pourri.voleio.jwt.JwtTokenService;
 import com.pourri.voleio.jwt.RecoveryJwtTokenDto;
+import com.pourri.voleio.role.Role;
+import com.pourri.voleio.role.RoleName;
 import com.pourri.voleio.security.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -35,6 +43,22 @@ public class UserService {
 
         // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+    }
+
+    public void createUser(CreateUserDTO createUserDTO) {
+
+        LocalDateTime now = LocalDateTime.now();
+        UserEntity newUser = UserEntity.builder()
+                .username(createUserDTO.username())
+                .email(createUserDTO.email())
+                .cpf(createUserDTO.cpf())
+                .password(securityConfiguration.passwordEncoder().encode(createUserDTO.password()))
+                .phone(createUserDTO.phone())
+                .roles(List.of(Role.builder().name(RoleName.valueOf("ROLE_COSTUMER")).build()))
+                .createdAt(now)
+                .updatedAt(now).build();
+
+        userRepository.save(newUser);
     }
 
 }
