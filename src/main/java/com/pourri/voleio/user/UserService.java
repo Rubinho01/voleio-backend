@@ -12,10 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +51,7 @@ public class UserService {
                 .cpf(createUserDTO.cpf())
                 .password(securityConfiguration.passwordEncoder().encode(createUserDTO.password()))
                 .phone(createUserDTO.phone())
-                .roles(List.of(Role.builder().name(RoleName.valueOf("ROLE_COSTUMER")).build()))
+                .roles(List.of(Role.builder().name(RoleName.valueOf("ROLE_CUSTOMER")).build()))
                 .createdAt(now)
                 .updatedAt(now).build();
 
