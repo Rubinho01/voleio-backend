@@ -1,9 +1,11 @@
 package com.pourri.voleio.security;
 
+import com.pourri.voleio.jwt.JwtTokenService;
+import com.pourri.voleio.user.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,9 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
-    @Autowired
-    private UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/users/login", // Url para fazer login
@@ -38,11 +37,17 @@ public class SecurityConfiguration {
 
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
-            "/users/test/administrator"
+            "/users/test/administrator",
+            "/admin/*",
+            "/courts/add",
+            "/users/admin/register"
     };
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenService jwtTokenService, UserRepository userRepository) throws Exception {
+        // Não expor este filtro como @Bean: o Spring Boot registra todo Filter no container de servlets,
+        // o que duplicaria a execução com addFilterBefore e pode zerar o SecurityContext na autorização.
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(jwtTokenService, userRepository);
         return http
                 .csrf(csrf -> csrf.disable())
 
@@ -61,9 +66,11 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                        .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR")
-                        .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
+                        // hasAuthority exige o mesmo texto de GrantedAuthority (enum RoleName já inclui o prefixo ROLE_)
+                        .requestMatchers(ENDPOINTS_ADMIN).hasAuthority("ROLE_ADMINISTRATOR")
+                        .requestMatchers(ENDPOINTS_CUSTOMER).hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().denyAll()
                 )
 

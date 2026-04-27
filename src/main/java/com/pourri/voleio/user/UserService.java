@@ -58,4 +58,20 @@ public class UserService {
         userRepository.save(newUser);
     }
 
+    public void createAdmin(CreateUserDTO createUserDTO) {
+
+        LocalDateTime now = LocalDateTime.now();
+        UserEntity newAdministrator = UserEntity.builder()
+                .username(createUserDTO.username())
+                .email(createUserDTO.email())
+                .cpf(createUserDTO.cpf())
+                .password(securityConfiguration.passwordEncoder().encode(createUserDTO.password()))
+                .phone(createUserDTO.phone())
+                .roles(List.of(Role.builder().name(RoleName.valueOf("ROLE_ADMINISTRATOR")).build()))
+                .createdAt(now)
+                .updatedAt(now).build();
+
+        userRepository.save(newAdministrator);
+    }
+
 }

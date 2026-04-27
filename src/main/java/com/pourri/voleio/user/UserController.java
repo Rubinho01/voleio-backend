@@ -29,5 +29,11 @@ public class UserController {
         return  new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/admin/register")
+    public ResponseEntity<Void> registerAdministrator(@RequestBody CreateUserDTO createUserDTO){
+        userService.createAdmin(createUserDTO);
+        return  new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
 }
