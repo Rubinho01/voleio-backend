@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 
@@ -33,18 +34,24 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         // Verifica se o endpoint requer autenticação antes de processar a requisição
         if (checkIfEndpointIsNotPublic(request)) {
             String token = recoveryToken(request);
             if (token != null && !token.isEmpty()) {
                 try {
                     String subject = jwtTokenService.getSubjectFromToken(token);
-                    UserEntity user = userRepository.findByEmail(subject).get();
-                    UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
+                    Optional<UserEntity> userOpt = userRepository.findByEmail(subject); // 👈 aqui
+                    if (userOpt.isEmpty()) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+                    UserEntity user = userOpt.get();
+
+                    UserDetailsImpl userDetails = new UserDetailsImpl(user);
                     Authentication authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (JWTVerificationException ignored) {
                     SecurityContextHolder.clearContext();

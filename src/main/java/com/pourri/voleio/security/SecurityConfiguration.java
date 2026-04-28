@@ -38,7 +38,7 @@ public class SecurityConfiguration {
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
             "/users/test/administrator",
-            "/admin/*",
+            "/admin/**",
             "/courts/add",
             "/users/admin/register"
     };
@@ -48,6 +48,7 @@ public class SecurityConfiguration {
         // Não expor este filtro como @Bean: o Spring Boot registra todo Filter no container de servlets,
         // o que duplicaria a execução com addFilterBefore e pode zerar o SecurityContext na autorização.
         UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(jwtTokenService, userRepository);
+
         return http
                 .csrf(csrf -> csrf.disable())
 
