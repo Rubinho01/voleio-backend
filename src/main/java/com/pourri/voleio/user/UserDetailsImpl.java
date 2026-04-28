@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Getter
@@ -26,6 +27,9 @@ public class UserDetailsImpl implements UserDetails {
          novo SimpleGrantedAuthority, que é uma implementação simples de
          GrantedAuthority
         */
+        if (user.getRoles() == null) {
+            return Collections.emptyList();
+        }
         return user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))

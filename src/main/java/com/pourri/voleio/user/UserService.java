@@ -5,6 +5,7 @@ import com.pourri.voleio.jwt.JwtTokenService;
 import com.pourri.voleio.jwt.RecoveryJwtTokenDto;
 import com.pourri.voleio.role.Role;
 import com.pourri.voleio.role.RoleName;
+import com.pourri.voleio.role.RoleRepository;
 import com.pourri.voleio.security.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private SecurityConfiguration securityConfiguration;
+    @Autowired
+    private RoleRepository roleRepository;
 
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
@@ -43,6 +46,8 @@ public class UserService {
     }
 
     public void createUser(CreateUserDTO createUserDTO) {
+        Role customerRole = roleRepository.findByName(RoleName.ROLE_CUSTOMER)
+                .orElseThrow(() -> new RuntimeException("Role CUSTOMER não encontrada no banco"));
 
         LocalDateTime now = LocalDateTime.now();
         UserEntity newUser = UserEntity.builder()
@@ -51,11 +56,29 @@ public class UserService {
                 .cpf(createUserDTO.cpf())
                 .password(securityConfiguration.passwordEncoder().encode(createUserDTO.password()))
                 .phone(createUserDTO.phone())
-                .roles(List.of(Role.builder().name(RoleName.valueOf("ROLE_CUSTOMER")).build()))
+                .roles(List.of(customerRole))
                 .createdAt(now)
                 .updatedAt(now).build();
 
         userRepository.save(newUser);
+    }
+
+    public void createAdmin(CreateUserDTO createUserDTO) {
+        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMINISTRATOR)
+                .orElseThrow(() -> new RuntimeException("Role ADMINISTRATOR não encontrada no banco"));
+
+        LocalDateTime now = LocalDateTime.now();
+        UserEntity newAdministrator = UserEntity.builder()
+                .username(createUserDTO.username())
+                .email(createUserDTO.email())
+                .cpf(createUserDTO.cpf())
+                .password(securityConfiguration.passwordEncoder().encode(createUserDTO.password()))
+                .phone(createUserDTO.phone())
+                .roles(List.of(adminRole))
+                .createdAt(now)
+                .updatedAt(now).build();
+
+        userRepository.save(newAdministrator);
     }
 
 }
