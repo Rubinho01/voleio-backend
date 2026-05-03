@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class CourtService {
@@ -30,5 +31,21 @@ public class CourtService {
                 .build();
         courtRepository.save(newCourt);
 
+    }
+
+    public List<ListAllCourtsDTO> listAllActiveCourts(){
+        List<CourtEntity> courts = courtRepository.findByIsActive(true);
+
+                return courts.stream()
+                        .map(court -> new ListAllCourtsDTO(
+                                court.getId(),
+                                court.getReference(),
+                                court.getDescription(),
+                                court.getTimeReference(),
+                                court.getPriceOfReference(),
+                                court.getStartTime(),
+                                court.getEndTime()
+                        ))
+                        .toList();
     }
 }
