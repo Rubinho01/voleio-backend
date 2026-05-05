@@ -17,6 +17,11 @@
 
 ---
 
+## Documentos
+C4Models: [Diretório com Todos os níveis](https://github.com/Rubinho01/voleio-backend/tree/main/documentos/C4Model)
+
+---
+
 ## 1. Domínio do Problema
 
 ### Contexto
