@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -18,9 +20,14 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponseDTO > authenticateUser(@RequestBody LoginUserDto loginUserDto) {
         RecoveryJwtTokenDto token = userService.authenticateUser(loginUserDto);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        List<String> roles = userService.getRoleByEmail(loginUserDto.email())
+                .stream()
+                .map(role -> role.getName().name())
+                .toList();
+        LoginResponseDTO response = new LoginResponseDTO(token.token(), roles);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")

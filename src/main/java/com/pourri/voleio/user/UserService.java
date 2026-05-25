@@ -6,6 +6,7 @@ import com.pourri.voleio.jwt.RecoveryJwtTokenDto;
 import com.pourri.voleio.role.Role;
 import com.pourri.voleio.role.RoleName;
 import com.pourri.voleio.role.RoleRepository;
+import com.pourri.voleio.role.RoleService;
 import com.pourri.voleio.security.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,8 @@ public class UserService {
     private SecurityConfiguration securityConfiguration;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private RoleService roleService;
 
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
@@ -62,6 +65,12 @@ public class UserService {
 
         userRepository.save(newUser);
     }
+
+    public List<Role> getRoleByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return userEntity.getRoles();
+    }
+
 
     public void createAdmin(CreateUserDTO createUserDTO) {
         Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMINISTRATOR)
