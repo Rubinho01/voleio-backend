@@ -26,7 +26,8 @@ public class UserController {
                 .stream()
                 .map(role -> role.getName().name())
                 .toList();
-        LoginResponseDTO response = new LoginResponseDTO(token.token(), roles);
+        Long userId = userService.getIdByEmail(loginUserDto.email());
+        LoginResponseDTO response = new LoginResponseDTO(token.token(), roles, userId);
         return ResponseEntity.ok(response);
     }
 

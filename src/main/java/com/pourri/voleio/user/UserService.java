@@ -71,6 +71,11 @@ public class UserService {
         return userEntity.getRoles();
     }
 
+    public Long getIdByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return userEntity.getId();
+    }
+
 
     public void createAdmin(CreateUserDTO createUserDTO) {
         Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMINISTRATOR)
