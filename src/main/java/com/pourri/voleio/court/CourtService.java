@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +48,27 @@ public class CourtService {
                                 court.getEndTime()
                         ))
                         .toList();
+    }
+
+    public List<LocalDateTime> splitOpenTimeInReferences(LocalDateTime start, LocalDateTime end, long reference) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("As datas de início e fim não podem ser nulas.");
+        }
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("A data de início não pode ser posterior à data de fim.");
+        }
+        if (reference <= 0) {
+            throw new IllegalArgumentException("O intervalo de minutos deve ser maior que zero.");
+        }
+
+        List<LocalDateTime> result = new ArrayList<>();
+        LocalDateTime current = start;
+
+        while (!current.isAfter(end)) {
+            result.add(current);
+            current = current.plusMinutes(reference);
+        }
+
+        return result;
     }
 }
