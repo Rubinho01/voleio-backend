@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -95,4 +96,23 @@ public class UserService {
         userRepository.save(newAdministrator);
     }
 
+    public Long getUserId(){
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        UserDetailsImpl user =
+                (UserDetailsImpl) auth.getPrincipal();
+        Long userId = user.getId();
+        if(userId == null){
+            throw new RuntimeException("Usuário não autenticado");
+        }
+        return userId;
+    }
+
+    public boolean checkIfAdmin() {
+        Long userId = getUserId();
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return user.getRoles().contains(RoleName.ROLE_ADMINISTRATOR);
+
+    }
 }

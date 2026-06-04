@@ -46,6 +46,8 @@ public class UserDetailsImpl implements UserDetails {
         return user.getEmail();
     }
 
+    public Long getId(){ return user.getId(); }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -66,4 +68,7 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    public String getEmail() { return user.getEmail(); }
+
+    public String getRole() { return user.getRoles().toString();}
 }
