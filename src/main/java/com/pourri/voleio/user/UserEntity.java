@@ -11,10 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "users",uniqueConstraints ={@UniqueConstraint(columnNames = {"cpf", "phone"})} )
-@Getter
-@Setter
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
