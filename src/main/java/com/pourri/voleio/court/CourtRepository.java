@@ -9,4 +9,5 @@ import java.util.List;
 public interface CourtRepository extends JpaRepository<CourtEntity, Long> {
     List<CourtEntity> findByReference(String reference);
     List<CourtEntity> findByIsActive(Boolean isActive);
+    CourtEntity findById(long id);
 }
