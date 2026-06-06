@@ -1,7 +1,7 @@
 package com.pourri.voleio.court;
 
 
-import com.pourri.voleio.rental.ReservationEntity;
+import com.pourri.voleio.reservation.ReservationEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

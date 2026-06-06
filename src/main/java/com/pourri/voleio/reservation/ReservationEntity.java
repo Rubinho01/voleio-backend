@@ -1,4 +1,4 @@
-package com.pourri.voleio.rental;
+package com.pourri.voleio.reservation;
 
 
 import com.pourri.voleio.court.CourtEntity;

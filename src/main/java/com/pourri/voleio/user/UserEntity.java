@@ -1,7 +1,7 @@
 package com.pourri.voleio.user;
 
 
-import com.pourri.voleio.rental.ReservationEntity;
+import com.pourri.voleio.reservation.ReservationEntity;
 import com.pourri.voleio.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
