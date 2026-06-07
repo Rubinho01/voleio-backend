@@ -8,6 +8,7 @@ import com.pourri.voleio.role.RoleName;
 import com.pourri.voleio.role.RoleRepository;
 import com.pourri.voleio.role.RoleService;
 import com.pourri.voleio.security.SecurityConfiguration;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -107,6 +108,11 @@ public class UserService {
             throw new RuntimeException("Usuário não autenticado");
         }
         return userId;
+    }
+
+    public UserEntity getUserEntity(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(()-> new EntityNotFoundException("Usuário Não encontrado"));
     }
 
     public boolean checkIfAdmin() {

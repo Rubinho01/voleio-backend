@@ -51,6 +51,11 @@ public class CourtService {
                         .toList();
     }
 
+    public CourtEntity getCourtEntity(Long courtId){
+        return courtRepository.findById(courtId)
+                .orElseThrow(() -> new EntityNotFoundException("Quadra não encontrada"));
+    }
+
     public List<LocalTime> splitOpenTimeInReferences(Long courtId) {
         CourtEntity court = courtRepository.findById(courtId)
                 .orElseThrow(() -> new EntityNotFoundException("Quadra não encontrada."));
