@@ -2,10 +2,10 @@ package com.pourri.voleio.reservation;
 
 import com.pourri.voleio.court.CourtEntity;
 import com.pourri.voleio.court.CourtService;
-import com.pourri.voleio.court.ReservationCourtDTO;
 import com.pourri.voleio.security.AuthService;
 import com.pourri.voleio.user.UserEntity;
 import com.pourri.voleio.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +15,13 @@ import java.util.List;
 
 @Service
 public class ReservationService {
+    @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
     private CourtService courtService;
+    @Autowired
     private AuthService authService;
+    @Autowired
     private UserService userService;
 
     public List<ReservationEntity> dayCourtReservations(LocalDate date, Long courtId) {
@@ -28,7 +32,6 @@ public class ReservationService {
         List<ReservationEntity> dayCourtReservations = dayCourtReservations(date, courtId);
         return dayCourtReservations.stream()
                 .map(ReservationEntity::getStartTime).toList();
-
     }
 
     public List<LocalTime> availibleDayCourtReservations(LocalDate date, Long courtId) {
