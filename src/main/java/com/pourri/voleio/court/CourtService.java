@@ -1,12 +1,14 @@
 package com.pourri.voleio.court;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +49,35 @@ public class CourtService {
                                 court.getEndTime()
                         ))
                         .toList();
+    }
+
+    public CourtEntity getCourtEntity(Long courtId){
+        return courtRepository.findById(courtId)
+                .orElseThrow(() -> new EntityNotFoundException("Quadra não encontrada"));
+    }
+
+    public List<LocalTime> splitOpenTimeInReferences(Long courtId) {
+        CourtEntity court = courtRepository.findById(courtId)
+                .orElseThrow(() -> new EntityNotFoundException("Quadra não encontrada."));
+
+        if (court.getStartTime() == null || court.getEndTime() == null) {
+            throw new IllegalArgumentException("As datas de início e fim não podem ser nulas.");
+        }
+        if (court.getStartTime().isAfter(court.getEndTime())) {
+            throw new IllegalArgumentException("A data de início não pode ser posterior à data de fim.");
+        }
+        if (court.getTimeReference() <= 0) {
+            throw new IllegalArgumentException("O intervalo de minutos deve ser maior que zero.");
+        }
+        List<LocalTime> result = new ArrayList<>();
+        LocalTime current = court.getStartTime();
+
+        while (!current.plusMinutes(court.getTimeReference())
+                .isAfter(court.getEndTime())) {
+            result.add(current);
+            current = current.plusMinutes(court.getTimeReference());
+        }
+
+        return result;
     }
 }

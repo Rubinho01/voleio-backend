@@ -1,7 +1,7 @@
 package com.pourri.voleio.user;
 
 
-import com.pourri.voleio.rental.RentalEntity;
+import com.pourri.voleio.reservation.ReservationEntity;
 import com.pourri.voleio.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +33,7 @@ public class UserEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "user")
-    private List<RentalEntity> rentals;
+    private List<ReservationEntity> rentals;
 
     public UserEntity() {
     }

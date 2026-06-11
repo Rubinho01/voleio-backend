@@ -1,7 +1,7 @@
 package com.pourri.voleio.court;
 
 
-import com.pourri.voleio.rental.RentalEntity;
+import com.pourri.voleio.reservation.ReservationEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +35,7 @@ public class CourtEntity {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "court")
-    private List<RentalEntity> rentals;
+    private List<ReservationEntity> rentals;
 
     public CourtEntity() {
     }
