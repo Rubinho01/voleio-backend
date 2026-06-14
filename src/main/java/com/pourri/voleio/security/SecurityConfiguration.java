@@ -30,7 +30,8 @@ public class SecurityConfiguration {
             "/users/test",
             "/courts/all",
             "/reservations/available",
-            "/reservations/new"
+            "/reservations/new",
+            "/reservations/my-reservations"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente

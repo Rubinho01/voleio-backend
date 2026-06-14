@@ -47,4 +47,9 @@ public class ReservationController {
         }
     }
 
+    @GetMapping("/my-reservations")
+    public ResponseEntity<UserReservationsDTO> getMyReservations() {
+        return ResponseEntity.ok(reservationService.getUserreservations());
+    }
+
 }
