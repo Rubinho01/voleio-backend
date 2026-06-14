@@ -11,6 +11,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 
     ReservationEntity findByCourtId(Long courtId);
     List<ReservationEntity> findByCourtIdAndDate(Long courtId, LocalDate date);
+    List<ReservationEntity> findByUserId(Long userId);
 
 
 

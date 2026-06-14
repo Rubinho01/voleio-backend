@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -81,4 +84,38 @@ public class ReservationService {
             throw new IllegalArgumentException("Horário indisponível");
         }
     }
+
+    public UserReservationsDTO getUserreservations() {
+        Long userId = authService.getCurrentUserId();
+        LocalDate today = LocalDate.now();
+
+        List<ReservationEntity> all = reservationRepository.findByUserId(userId);
+
+        Map<Boolean, List<ReservationDTO>> partitioned = all.stream()
+                .collect(Collectors.partitioningBy(
+                        r -> r.getDate().isBefore(today),
+                        Collectors.mapping(this::toReservationDTO, Collectors.toList())
+                ));
+
+        List<ReservationDTO> past     = partitioned.get(true);
+        List<ReservationDTO> upcoming = partitioned.get(false);
+
+        past.sort(Comparator.comparing(ReservationDTO::date).reversed()
+                .thenComparing(ReservationDTO::startTime));
+        upcoming.sort(Comparator.comparing(ReservationDTO::date)
+                .thenComparing(ReservationDTO::startTime));
+
+        return new UserReservationsDTO(past, upcoming);
+    }
+
+    private ReservationDTO toReservationDTO(ReservationEntity r) {
+        return new ReservationDTO(
+                r.getStartTime(),
+                r.getEndTime(),
+                r.getDate(),
+                r.getCourt().getReference()
+        );
+    }
+
+
 }
