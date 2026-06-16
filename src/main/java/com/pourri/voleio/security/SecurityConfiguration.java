@@ -44,6 +44,7 @@ public class SecurityConfiguration {
             "/users/test/administrator",
             "/admin/**",
             "/courts/add",
+            "/courts/*",
             "/users/admin/register"
     };
 

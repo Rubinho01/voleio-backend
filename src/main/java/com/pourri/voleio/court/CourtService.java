@@ -80,4 +80,21 @@ public class CourtService {
 
         return result;
     }
+
+    public void updateCourt(Long courtId, CreateCourtDTO dto) {
+        CourtEntity court = courtRepository.findById(courtId)
+                .orElseThrow(() -> new EntityNotFoundException("Quadra não encontrada"));
+
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("HH:mm");
+
+        court.setReference(dto.reference());
+        court.setDescription(dto.description());
+        court.setTimeReference(dto.timeReference());
+        court.setPriceOfReference(dto.priceOfReference());
+        court.setStartTime(LocalTime.parse(dto.startTime().format(formatador)));
+        court.setEndTime(LocalTime.parse(dto.endTime().format(formatador)));
+        court.setUpdatedAt(LocalDateTime.now());
+
+        courtRepository.save(court);
+    }
 }
