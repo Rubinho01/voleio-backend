@@ -71,10 +71,14 @@ public class CourtService {
         }
         List<LocalTime> result = new ArrayList<>();
         LocalTime current = court.getStartTime();
+        LocalTime zero = LocalTime.of(0,0);
 
         while (!current.plusMinutes(court.getTimeReference())
                 .isAfter(court.getEndTime())) {
             result.add(current);
+            if (current.equals(zero)) {
+                break;
+            }
             current = current.plusMinutes(court.getTimeReference());
         }
 
