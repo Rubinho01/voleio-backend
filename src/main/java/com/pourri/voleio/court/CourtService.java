@@ -76,7 +76,7 @@ public class CourtService {
         while (!current.plusMinutes(court.getTimeReference())
                 .isAfter(court.getEndTime())) {
             result.add(current);
-            if (current.equals(zero)) {
+            if (current.isAfter(court.getEndTime())) {
                 break;
             }
             current = current.plusMinutes(court.getTimeReference());
