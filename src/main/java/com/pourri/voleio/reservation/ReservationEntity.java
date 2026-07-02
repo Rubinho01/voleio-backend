@@ -1,22 +1,25 @@
-package com.pourri.voleio.rental;
+package com.pourri.voleio.reservation;
 
 
 import com.pourri.voleio.court.CourtEntity;
 import com.pourri.voleio.user.UserEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "rentals")
+@Table(name = "reservations")
+@Builder
+@AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class RentalEntity {
+public class ReservationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +32,10 @@ public class RentalEntity {
     private CourtEntity court;
     private LocalTime startTime;
     private LocalTime endTime;
-    private Integer numberOfReferences;
+    private LocalDate date;
     private Date createdAt;
     private Date updatedAt;
 
-    public RentalEntity(Date updatedAt, Date createdAt, Integer numberOfReferences, LocalTime endTime, LocalTime startTime, CourtEntity court, UserEntity user) {
-        this.updatedAt = updatedAt;
-        this.createdAt = createdAt;
-        this.numberOfReferences = numberOfReferences;
-        this.endTime = endTime;
-        this.startTime = startTime;
-        this.court = court;
-        this.user = user;
-    }
-
-    public RentalEntity() {
+    public ReservationEntity() {
     }
 }

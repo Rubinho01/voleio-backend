@@ -1,18 +1,18 @@
 package com.pourri.voleio.user;
 
 
-import com.pourri.voleio.rental.RentalEntity;
+import com.pourri.voleio.reservation.ReservationEntity;
+import com.pourri.voleio.role.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "users",uniqueConstraints ={@UniqueConstraint(columnNames = {"cpf", "phone"})} )
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class UserEntity {
@@ -24,25 +24,20 @@ public class UserEntity {
     private String cpf;
     private String password;
     private String phone;
-    private String role;
-    private Date createdAt;
-    private Date updatedAt;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id"))
+    @Singular
+    private List<Role> roles;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "user")
-    private List<RentalEntity> rentals;
+    private List<ReservationEntity> rentals;
 
     public UserEntity() {
     }
 
-    public UserEntity(String email, String username, String cpf, String password, Date createdAt, String role, String phone, Date updatedAt, List<RentalEntity> rentals) {
-        this.email = email;
-        this.username = username;
-        this.cpf = cpf;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.role = role;
-        this.phone = phone;
-        this.updatedAt = updatedAt;
-        this.rentals = rentals;
-    }
+
 }
 
